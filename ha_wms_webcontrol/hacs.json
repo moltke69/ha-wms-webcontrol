@@ -1,0 +1,6 @@
+{
+  "name": "WMS Webcontrol (Basic)",
+  "render_readme": true,
+  "iot_class": "local_polling",
+  "zip_release": false
+}

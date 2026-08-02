@@ -1,0 +1,13 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Initiate Warema Webcontrol",
+        "description": "Please enter IP address or host name of your WMS Webcontrol.",
+        "data": {
+          "host": "IP address (e.g. 192.168.1.50)"
+        }
+      }
+    }
+  }
+}
