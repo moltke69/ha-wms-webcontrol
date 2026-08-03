@@ -1,61 +1,68 @@
 # WMS WebControl (Basic) – Home Assistant Integration
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+[![License: LPGL3.0](https://img.shields.io/github/license/moltke69/ha-wms-webcontrol)](LICENSE)
+[![Maintenance](https://img.shields.io/badge/Maintenance-Active-green.svg)](https://github.com/moltke69/ha-wms-webcontrol)
 
-Diese Custom Component ermöglicht die lokale Steuerung von Warema Markisen (und anderen WMS-Geräten) über das klassische **Warema WMS Webcontrol** (ohne "Pro") in Home Assistant.
+---
 
-Da das WMS Webcontrol keine offizielle API bietet, nutzt diese Integration die internen XML-Protokolle, die auch von der Weboberfläche des Geräts verwendet werden, um Befehle zu senden und den Status abzufragen.
+> [!IMPORTANT]
+> This integration talks to the old Warema WMS WebControl via XML protocol. It does not work with the Warema WMS WebControl Pro.
+
+---
+
+This custom component enables local control of Warema awnings (and other WMS devices) via the classic **Warema WMS WebControl** (without "Pro") in Home Assistant. Since the WMS WebControl does not offer an official API, this integration uses the internal XML protocols, which are also used by the device's web interface, to send commands and query the status.
 
 ## Features
 
-*  **Kein YAML notwendig**: Die komplette Einrichtung erfolgt modern und komfortabel über die Home Assistant Benutzeroberfläche (Config Flow).
-*  **Auto-Discovery**: Du musst nur die IP-Adresse eingeben. Die Integration durchsucht das Webcontrol automatisch nach allen Räumen und Kanälen und übernimmt die originalen Gerätenamen!
-*  **Volle Kontrolle**: Unterstützt das Öffnen, Schließen, Stoppen während der Fahrt sowie das Anfahren einer exakten prozentualen Position.
-*  **100% Lokal**: Alle Befehle werden direkt im eigenen Netzwerk an das Webcontrol gesendet. Keine Cloud erforderlich!
-*  **Echtzeit-Feedback**: Holt sich vor jeder Statusaktualisierung frische Daten (Wake-Up-Befehl), damit die Position in Home Assistant immer stimmt.
+* **No YAML required**: The entire setup is performed conveniently and efficiently via the Home Assistant user interface (Config Flow).
+* **Auto-Discovery**: You only need to enter the IP address. The integration automatically scans the web control for all rooms and channels and adopts the original device names!
+* **Full Control**: Supports opening, closing, and stopping while moving, as well as moving to a precise percentage position.
+* **100% Local**: All commands are sent directly to the web control within your local network. No cloud required!
+* **Real-time Feedback**: Retrieves fresh data (wake-up command) before each status update, ensuring the position in Home Assistant is always accurate.
 
-## Voraussetzungen
+## Requirements
 
-* Ein funktionierendes **Warema WMS Webcontrol** (die ältere Version, oft als kleiner schwarzer Kasten realisiert ist).
-* Die IP-Adresse des WMS Webcontrol muss bekannt und am besten statisch im Router vergeben sein.
+* A working **Warema WMS Webcontrol** (the older version, often implemented as a small black box).
+* The IP address of the WMS Webcontrol must be known and ideally assigned statically in the router.
 
 ## Installation
 
-Die einfachste Methode ist die Installation über [HACS](https://hacs.xyz/) (Home Assistant Community Store).
+The easiest method is installation via [HACS](https://hacs.xyz/) (Home Assistant Community Store).
 
-1. Öffne **HACS** in Home Assistant.
-2. Klicke auf **Integrationen**.
-3. Klicke oben rechts auf die drei Punkte (`...`) und wähle **Benutzerdefinierte Repositories**.
-4. Füge die URL dieses Repositories ein: `https://github.com/moltke69/ha-wms-webcontrol`
-5. Wähle als Kategorie **Integration** und klicke auf *Hinzufügen*.
-6. Suche nun in HACS nach *Warema WMS Webcontrol*, klicke darauf und wähle **Herunterladen**.
-7. **Starte Home Assistant neu.**
+1. Open **HACS** in Home Assistant.
+2. Click on **Integrations**.
+3. Click the three dots (`...`) in the upper right corner and select **Custom Repositories**.
+4. Paste the URL of this repository: `https://github.com/moltke69/ha-wms-webcontrol`
+5. Select **Integration** as the category and click *Add*.
+6. Now search for *Warema WMS Webcontrol* in HACS, click on it, and select **Download**.
+7. **Restart Home Assistant.**
 
-*(Alternativ: Lade das Repository als ZIP herunter und kopiere den Ordner `custom_components/warema_webcontrol` manuell in Dein Home Assistant Verzeichnis.)*
+*(Alternatively: Download the repository as a ZIP file and manually copy the `custom_components/warema_webcontrol` folder to your Home Assistant directory.)*
 
-## Konfiguration
+## Configuration
 
-Nachdem die Integration installiert und Home Assistant neu gestartet wurde, ist die Einrichtung ein Kinderspiel:
+After the integration is installed and Home Assistant has been restarted, setup is a breeze:
 
-1. Gehe in Home Assistant zu **Einstellungen** -> **Integration**.
-2. Klicke unten rechts auf **Integration hinzufügen**.
-3. Suche nach **Warema WMS Webcontrol** und wähle sie aus.
-4. Gib die **IP-Adresse** Deines Webcontrols ein (z.B. `192.168.1.50`).
-5. Klicke auf *Absenden*.
+1. In Home Assistant, go to **Settings** -> **Integration**.
+2. Click **Add Integration** in the bottom right corner.
+3. Search for **Warema WMS Webcontrol** and select it.
+4. Enter the **IP address** of your web control (e.g., `192.168.1.50`).
+5. Click *Submit*.
 
-Lehn Dich zurück! Die Integration scannt nun alle Räume und fügt Deine Markisen automatisch als "Cover" (Abdeckungen) zu Deinem Home Assistant hinzu.
+Sit back! The integration will now scan all rooms and automatically add your awnings as "covers" to your Home Assistant.
 
-## Fehlerbehebung (Troubleshooting)
+## Troubleshooting
 
-* **Die Markise reagiert nur manchmal:** Das System verwendet fortlaufende Sequenznummern, um Befehle zu authentifizieren. Die Integration kümmert sich automatisch darum. Falls trotzdem Befehle verschluckt werden, prüfe, ob das Webcontrol eine stabile WLAN/LAN-Verbindung hat.
-* **Die Position stimmt nicht:** Warema nutzt intern eine Logik von 0-200, während Home Assistant mit 0-100% rechnet (0% = geschlossen/ausgefahren, 100% = offen/eingefahren). Die Integration rechnet dies automatisch um.
+* **The awning only responds intermittently:** The system uses sequential numbers to authenticate commands. The integration handles this automatically. If commands are still being dropped, check if the web control has a stable Wi-Fi/LAN connection.
+* **The position is incorrect:** Warema uses an internal logic of 0-200, while Home Assistant uses 0-100% (0% = closed/extended, 100% = open/retracted). The integration automatically converts this.
 
-## Hinweis zur Code-Erstellung
+## Note on Code Development
 
-Das Reverse Engineering des WMS-Protokolls (das Abfangen der Hex- und XML-Strings) wurde manuell durchgeführt. Für die anschließende Übersetzung in eine funktionsfähige Home Assistant Integration (Python, Config Flow, async-Logik)
-wurde KI-Unterstützung (LLM) genutzt. Der Code wurde anschließend ausführlich lokal getestet.
-
+The reverse engineering of the WMS protocol (intercepting the hex and XML strings) was performed manually. AI assistance (LLM) was used for the subsequent translation into a functional Home Assistant integration (Python, Config Flow, async logic).
+The code was then thoroughly tested locally.
 
 ---
-*Disclaimer: Dies ist ein inoffizielles Community-Projekt. Es steht in keiner Verbindung zur WAREMA Renkhoff SE.*
+*Disclaimer: This is an unofficial community project. It is not affiliated with WAREMA Renkhoff SE.*
+
 
