@@ -76,13 +76,34 @@ Every transmitted string begins with the same 3-byte header, followed by a varia
 
 ---
 
-### 2. Important Payloads (Commands)
+### 2. Payload (Commands)
+
+The first byte of the payload is the command ID (01-41).
+
+#### Setup & management command (01-1D)
+
+* 01 / 03: Create room / Query room
+* 05 / 07 / 09: Change room name, change order, delete room
+* 0B / 0D / 0F: Create, query, or delete channels (devices)
+* 1B / 1D: Save infrastructure (i.e., all rooms and devices) to SD card or load from it
+
+#### Operation & status (21-41)
+
+* 21 (Channel operation): Movement command. (The response is 22)
+* 23 (Position feedback): Wake-up command. (Response is 24)
+* 25 (Wink): Makes the motor "wiggle" briefly (up/down) to identify it.
+* 27 / 29: Query / change password
+* 2B (Automatic mode): Enables or disables sun/wind automation for the device.
+* 2D (Read thresholds): Reads the wind speed or brightness levels that trigger the automation.
+* 2F (RTC): Sets the WebControl's internal clock (Real Time Clock).
+* 31 (Polling): Our status query from the cache. (Response is 32).
+* 3F / 41: Set thresholds or move to comfort positions.
 
 #### A. Movement Command / Channel Operation (`21`)
 Moves an awning or stops it.
 **Example payload:** `21 00 01 03 64 FF FF FF` (Move room 0, channel 1 to 50%)
 
-| Byte (in payload) | Meaning | Values â€â€|
+| Byte (in payload) | Meaning | Values |
 | :--- | :--- | :--- |
 | **01** | Command ID | `21` (Channel operation) |
 | **02** | Room index | `00` to `13` (0 to 19) |
@@ -97,7 +118,7 @@ Moves an awning or stops it.
 Wakes up the motor and forces it to transmit its current status to the WebControl.
 **Example payload:** `23 00 01` (Wake-up for room 0, channel 1)
 
-| Byte | Meaning | Values â€â€|
+| Byte | Meaning | Values |
 | :--- | :--- | :--- |
 | **01** | Command ID | `23` |
 | **02** | Room index | `00` to `13` |
@@ -106,19 +127,16 @@ Wakes up the motor and forces it to transmit its current status to the WebContro
 #### C. Polling / Read status (`31`)
 Reads the XML-formatted data from the WebControl's buffer (after a wake-up). **Example payload:** `31 00 01 01` (Read position of room 0, channel 1)
 
-| Byte | Meaning | Values â€â€|
+| Byte | Meaning | Values |
 | :--- | :--- | :--- |
 | **01** | Command ID | `31` (Polling) |
 | **02** | Room index | `00` to `13` |
 | **03** | Channel index | `00` to `09` |
 | **04** | Polling type | `01` = Query position |
 
----
-
 ### 3. Parsing the XML response
 The WebControl responds to a polling command (`31`) with an XML string. The current position is contained within the `<position>` tag.
 *Note:* The resolution range of 0 to 200 applies here as well. The value must be divided by 2 to obtain the actual percentage (0â€“100%). If the system reports the value `255`, the position is currently unknown (e.g., during a manual calibration run).
-
 
 ## Note on Code Development
 
