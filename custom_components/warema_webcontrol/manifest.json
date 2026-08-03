@@ -1,11 +1,11 @@
 {
   "domain": "warema_webcontrol",
-  "name": "Warema WMS Webcontrol (Basic)",
+  "name": "WMS WebControl (Basic)",
   "config_flow": true,
-  "documentation": "https://git.moltke69.de/ha-wms-webcontrol",
+  "documentation": "https://github.com/moltke69/ha-wms-webcontrol",
   "dependencies": [],
   "codeowners": ["@moltke69"],
   "requirements": [],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "iot_class": "local_polling"
 }
