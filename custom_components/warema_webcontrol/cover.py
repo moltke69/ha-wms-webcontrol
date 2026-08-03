@@ -7,7 +7,8 @@ import xml.etree.ElementTree as ET
 from homeassistant.components.cover import (
     CoverEntity,
     ATTR_POSITION,
-    CoverEntityFeature
+    CoverEntityFeature,
+    CoverDeviceClass
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -21,7 +22,9 @@ _GLOBAL_SEQ = 0
 
 def get_next_sequence() -> str:
     global _GLOBAL_SEQ
-    _GLOBAL_SEQ = (_GLOBAL_SEQ + 1) % 256
+    _GLOBAL_SEQ += 1
+    if _GLOBAL_SEQ >= 254:
+        _GLOBAL_SEQ = 1
     return f"{_GLOBAL_SEQ:02x}"
 
 async def send_protocol_command(host: str, payload_hex: str) -> str | None:
@@ -38,7 +41,7 @@ async def send_protocol_command(host: str, payload_hex: str) -> str | None:
                 if response.status == 200:
                     return await response.text()
         except Exception as e:
-            _LOGGER.error("Verbindungsfehler: %s", e)
+            _LOGGER.error("Communication error: %s", e)
     return None
 
 async def async_setup_entry(
@@ -50,7 +53,7 @@ async def async_setup_entry(
     host = entry.data[CONF_HOST]
     entities = []
     
-    _LOGGER.info("Starte Auto-Discovery auf %s", host)
+    _LOGGER.info("Start auto discovery on %s", host)
     
     for room_idx in range(10):
         room_hex = f"{room_idx:02x}"
@@ -75,30 +78,37 @@ async def async_setup_entry(
                     
                 root_channel = ET.fromstring(xml_channel)
                 kanalname_elem = root_channel.find("kanalname")
+                bedientyp_elem = root_channel.find("bedientyp")
                 
                 if kanalname_elem is None or not kanalname_elem.text:
                     break
                     
                 kanalname = kanalname_elem.text
-                entities.append(WaremaAwning(host, room_hex, channel_hex, kanalname))
+                bedientyp = int(bedientyp_elem.text) if bedientyp_elem is not None else None
+                entities.append(WaremaAwning(host, room_hex, channel_hex, kanalname, bedientyp))
                 
         except ET.ParseError:
-            _LOGGER.error("Fehler beim Parsen XML Raum %s", room_hex)
+            _LOGGER.error("ERROR while parsing of XML room %s", room_hex)
             
     async_add_entities(entities, update_before_add=True)
 
-
 class WaremaAwning(CoverEntity):
-    def __init__(self, host, room_id, channel_id, name):
+    def __init__(self, host, room_id, channel_id, name, bedientyp):
         self._host = host
         self._room_id = room_id 
         self._channel_id = channel_id 
         self._name = name
         self._current_position = 100 
         
-        # WICHTIG: Erlaubt das Verwalten der Entität in der UI
         self._attr_unique_id = f"warema_{host}_{room_id}_{channel_id}"
         
+        if bedientyp == 4:
+            self._attr_device_class = CoverDeviceClass.AWNING
+        elif bedientyp in [2, 3]:
+            self._attr_device_class = CoverDeviceClass.SHUTTER
+        else:
+            self._attr_device_class = CoverDeviceClass.SHADE
+
         self._attr_supported_features = (
             CoverEntityFeature.OPEN | 
             CoverEntityFeature.CLOSE | 
