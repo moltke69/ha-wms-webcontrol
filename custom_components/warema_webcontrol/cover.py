@@ -85,7 +85,12 @@ async def async_setup_entry(
                     
                 kanalname = kanalname_elem.text
                 bedientyp = int(bedientyp_elem.text) if bedientyp_elem is not None else None
-                entities.append(WaremaAwning(host, room_hex, channel_hex, kanalname, bedientyp))
+
+                if bedientyp == 4:
+                    entities.append(WaremaAwning(host, room_hex, channel_hex, kanalname, bedientyp, "main"))
+                    entities.append(WaremaAwning(host, room_hex, channel_hex, f"{kanalname} Volant", bedientyp, "volant"))
+                else:
+                    entities.append(WaremaAwning(host, room_hex, channel_hex, kanalname, bedientyp, "main"))
                 
         except ET.ParseError:
             _LOGGER.error("ERROR while parsing of XML room %s", room_hex)
@@ -93,14 +98,15 @@ async def async_setup_entry(
     async_add_entities(entities, update_before_add=True)
 
 class WaremaAwning(CoverEntity):
-    def __init__(self, host, room_id, channel_id, name, bedientyp):
+    def __init__(self, host, room_id, channel_id, name, bedientyp, cover_type="main"):
         self._host = host
         self._room_id = room_id 
         self._channel_id = channel_id 
         self._name = name
+        self._cover_type = cover_type
         self._current_position = 100 
         
-        self._attr_unique_id = f"warema_{host}_{room_id}_{channel_id}"
+        self._attr_unique_id = f"warema_{host}_{room_id}_{channel_id}_{cover_type}"
         
         if bedientyp == 4:
             self._attr_device_class = CoverDeviceClass.AWNING
@@ -140,9 +146,12 @@ class WaremaAwning(CoverEntity):
         warema_raw = int(warema_percent * 2)
         position_hex = f"{warema_raw:02x}"
         
-        payload = f"21{self._room_id}{self._channel_id}03{position_hex}ffffff"
+        if self._cover_type == "main":
+            payload = f"21{self._room_id}{self._channel_id}03{position_hex}ffffff"
+        elif self._cover_type == "volant":
+            payload = f"21{self._room_id}{self._channel_id}03ffff{position_hex}ff"
+            
         await self._send(payload)
-        
         self._current_position = ha_position
         self.async_write_ha_state()
 
@@ -163,7 +172,7 @@ class WaremaAwning(CoverEntity):
         payload_wakeup = f"23{self._room_id}{self._channel_id}"
         await self._send(payload_wakeup)
         
-        await asyncio.sleep(1.0) 
+        await asyncio.sleep(0.5) 
 
         payload_status = f"31{self._room_id}{self._channel_id}01"
         xml_response = await self._send(payload_status)
@@ -171,13 +180,14 @@ class WaremaAwning(CoverEntity):
         if xml_response:
             try:
                 root = ET.fromstring(xml_response)
-                pos_element = root.find("position")
                 
-                if pos_element is not None:
+                tag_name = "position" if self._cover_type == "main" else "positionvolant1"
+                pos_element = root.find(tag_name)
+                
+                if pos_element is not None and pos_element.text != "255":
                     warema_raw = int(pos_element.text)
                     warema_percent = warema_raw / 2
                     ha_position = int(100 - warema_percent)
                     self._current_position = ha_position
             except ET.ParseError:
                 pass
-
