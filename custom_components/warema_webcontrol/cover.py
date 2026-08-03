@@ -109,7 +109,7 @@ class WaremaAwning(CoverEntity):
         self._attr_unique_id = f"warema_{host}_{room_id}_{channel_id}_{cover_type}"
         
         if bedientyp == 4:
-            self._attr_device_class = CoverDeviceClass.AWNING
+            self._attr_device_class = CoverDeviceClass.NONE
         elif bedientyp in [2, 3]:
             self._attr_device_class = CoverDeviceClass.SHUTTER
         else:
