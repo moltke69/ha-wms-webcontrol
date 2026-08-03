@@ -57,12 +57,75 @@ Sit back! The integration will now scan all rooms and automatically add your awn
 * **The awning only responds intermittently:** The system uses sequential numbers to authenticate commands. The integration handles this automatically. If commands are still being dropped, check if the web control has a stable Wi-Fi/LAN connection.
 * **The position is incorrect:** Warema uses an internal logic of 0-200, while Home Assistant uses 0-100% (0% = closed/extended, 100% = open/retracted). The integration automatically converts this.
 
+## WMS WebControl protocol (reverse engineering)
+
+Since the Warema WMS WebControl does not have an official REST API, communication takes place via a hex string passed to `protocol.xml` as a GET parameter.
+The base URL is always: `http://<IP>/protocol.xml?protocol=<HEX_STRING>`
+
+*Note: 1 byte corresponds to 2 hex characters (e.g., `0A`).*
+
+### 1. The General Header (The first 3 bytes)
+Every transmitted string begins with the same 3-byte header, followed by a variable payload:
+
+| Byte | Meaning | Explanation |
+| :--- | :--- | :--- |
+| **01** | Start byte | Always `90` (`COMMAND_CODE`). |
+| **02** | Sequence counter | Sequential number from `01` to `FE` (1 to 254). At 254, the counter restarts at 1. `00` is invalid. Prevents replay attacks. |
+| **03** | Payload length | The number of subsequent bytes (hexadecimal). |
+| **04+**| Payload | The actual command (see below). |
+
+---
+
+### 2. Important Payloads (Commands)
+
+#### A. Movement Command / Channel Operation (`21`)
+Moves an awning or stops it.
+**Example payload:** `21 00 01 03 64 FF FF FF` (Move room 0, channel 1 to 50%)
+
+| Byte (in payload) | Meaning | Values â€â€|
+| :--- | :--- | :--- |
+| **01** | Command ID | `21` (Channel operation) |
+| **02** | Room index | `00` to `13` (0 to 19) |
+| **03** | Channel index | `00` to `09` (0 to 9) |
+| **04** | Action | `01` = Stop, `03` = Move to position |
+| **05** | Position (setpoint) | `00` (0%) to `C8` (100%). *Note: Warema uses 0.5% increments; therefore, 100% corresponds to the value 200 (0xC8). `FF` = ignore.* |
+| **06** | Tilt / Angle | `-127Â°` to `+127Â°` (`00` to `FE`). `FF` = ignore. |
+| **07** | Valance 1 position | `00` to `C8`. `FF` = ignore. |
+| **08** | Valance 2 position | `00` to `C8`. `FF` = ignore. |
+
+#### B. Wake-up / Request position feedback (`23`)
+Wakes up the motor and forces it to transmit its current status to the WebControl.
+**Example payload:** `23 00 01` (Wake-up for room 0, channel 1)
+
+| Byte | Meaning | Values â€â€|
+| :--- | :--- | :--- |
+| **01** | Command ID | `23` |
+| **02** | Room index | `00` to `13` |
+| **03** | Channel index | `00` to `09` |
+
+#### C. Polling / Read status (`31`)
+Reads the XML-formatted data from the WebControl's buffer (after a wake-up). **Example payload:** `31 00 01 01` (Read position of room 0, channel 1)
+
+| Byte | Meaning | Values â€â€|
+| :--- | :--- | :--- |
+| **01** | Command ID | `31` (Polling) |
+| **02** | Room index | `00` to `13` |
+| **03** | Channel index | `00` to `09` |
+| **04** | Polling type | `01` = Query position |
+
+---
+
+### 3. Parsing the XML response
+The WebControl responds to a polling command (`31`) with an XML string. The current position is contained within the `<position>` tag.
+*Note:* The resolution range of 0 to 200 applies here as well. The value must be divided by 2 to obtain the actual percentage (0â€“100%). If the system reports the value `255`, the position is currently unknown (e.g., during a manual calibration run).
+
+
 ## Note on Code Development
 
 The reverse engineering of the WMS protocol (intercepting the hex and XML strings) was performed manually. AI assistance (LLM) was used for the subsequent translation into a functional Home Assistant integration (Python, Config Flow, async logic).
 The code was then thoroughly tested locally.
 
-# Showing Your Appreciation
+## Showing Your Appreciation
 
 If you like this project, please give it a star on [GitHub](https://github.com/moltke69/ha_wms_webconfig) or consider becoming a [Sponsor](https://github.com/sponsors/moltke69).
 
