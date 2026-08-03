@@ -62,6 +62,10 @@ Sit back! The integration will now scan all rooms and automatically add your awn
 The reverse engineering of the WMS protocol (intercepting the hex and XML strings) was performed manually. AI assistance (LLM) was used for the subsequent translation into a functional Home Assistant integration (Python, Config Flow, async logic).
 The code was then thoroughly tested locally.
 
+# Showing Your Appreciation
+
+If you like this project, please give it a star on [GitHub](https://github.com/moltke69/ha_wms_webconfig) or consider becoming a [Sponsor](https://github.com/sponsors/moltke69).
+
 ---
 *Disclaimer: This is an unofficial community project. It is not affiliated with WAREMA Renkhoff SE.*
 
