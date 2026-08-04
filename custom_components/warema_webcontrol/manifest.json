@@ -5,7 +5,8 @@
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/moltke69/ha-wms-webcontrol",
-  "issue_tracker": "[https://github.com/moltke69/ha-wms-webcontrol/issues](https://github.com/moltke69/ha-wms-webcontrol/issues)",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/moltke69/ha-wms-webcontrol/issues",
   "requirements": [],
   "version": "1.0.8"
 }
