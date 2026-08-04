@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 256">
+  <!-- Hintergrund (eckig) -->
+  <rect width="600" height="256" fill="#202124"/>
+  
+  <!-- Das Markisen-Icon auf der linken Seite -->
+  <g transform="translate(32, 28) scale(0.78)">
+    <rect x="36" y="60" width="184" height="24" rx="8" fill="#E8EAED"/>
+    <rect x="44" y="84" width="42" height="76" fill="#F9AB00"/>
+    <rect x="86" y="84" width="42" height="76" fill="#FFFFFF"/>
+    <rect x="128" y="84" width="42" height="76" fill="#F9AB00"/>
+    <rect x="170" y="84" width="42" height="76" fill="#FFFFFF"/>
+    <path d="M 44 160 A 21 21 0 0 0 86 160 Z" fill="#F9AB00"/>
+    <path d="M 86 160 A 21 21 0 0 0 128 160 Z" fill="#FFFFFF"/>
+    <path d="M 128 160 A 21 21 0 0 0 170 160 Z" fill="#F9AB00"/>
+    <path d="M 170 160 A 21 21 0 0 0 212 160 Z" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- Beschriftung (Schriftgröße verkleinert, damit alles ins Bild passt) -->
+  <text x="235" y="120" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="bold" fill="#E8EAED">WMS WebControl</text>
+  <text x="235" y="165" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="normal" fill="#F9AB00">(Basic)</text>
+  
+  <!-- Kleiner Untertitel -->
+  <text x="235" y="210" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" fill="#9AA0A6">Local Home Assistant Integration</text>
+</svg>

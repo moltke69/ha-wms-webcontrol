@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- Hintergrund (Dark Mode Style, eckig) -->
+  <rect width="256" height="256" fill="#202124"/>
+  
+  <!-- Markisenkasten -->
+  <rect x="36" y="60" width="184" height="24" rx="8" fill="#E8EAED"/>
+  
+  <!-- Markisenstoff Streifen -->
+  <rect x="44" y="84" width="42" height="76" fill="#F9AB00"/>
+  <rect x="86" y="84" width="42" height="76" fill="#FFFFFF"/>
+  <rect x="128" y="84" width="42" height="76" fill="#F9AB00"/>
+  <rect x="170" y="84" width="42" height="76" fill="#FFFFFF"/>
+  
+  <!-- Volant (Die runden Abschlüsse unten) -->
+  <path d="M 44 160 A 21 21 0 0 0 86 160 Z" fill="#F9AB00"/>
+  <path d="M 86 160 A 21 21 0 0 0 128 160 Z" fill="#FFFFFF"/>
+  <path d="M 128 160 A 21 21 0 0 0 170 160 Z" fill="#F9AB00"/>
+  <path d="M 170 160 A 21 21 0 0 0 212 160 Z" fill="#FFFFFF"/>
+</svg>
