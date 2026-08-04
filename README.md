@@ -4,6 +4,7 @@
 [![Maintenance](https://img.shields.io/badge/Maintenance-Active-green.svg)](https://github.com/moltke69/ha-wms-webcontrol)
 [![HACS Validation](https://github.com/moltke69/ha-wms-webcontrol/actions/workflows/validate.yml/badge.svg)](https://github.com/moltke69/ha-wms-webcontrol/actions)
 [![Ruff Linting](https://github.com/moltke69/ha-wms-webcontrol/actions/workflows/lint.yml/badge.svg)](https://github.com/moltke69/ha-wms-webcontrol/actions)
+[![Mypy Type Check](https://github.com/moltke69/ha-wms-webcontrol/actions/workflows/typecheck.yml/badge.svg)](https://github.com/moltke69/ha-wms-webcontrol/actions)
 
 ---
 

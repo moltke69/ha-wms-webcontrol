@@ -88,7 +88,9 @@ async def async_setup_entry(
 
                 kanalname = kanalname_elem.text
                 bedientyp = (
-                    int(bedientyp_elem.text) if bedientyp_elem is not None else None
+                    int(bedientyp_elem.text) 
+                    if bedientyp_elem is not None and bedientyp_elem.text is not None 
+                    else None
                 )
 
                 if bedientyp == 4:
@@ -209,7 +211,7 @@ class WaremaAwning(CoverEntity):
                 )
                 pos_element = root.find(tag_name)
 
-                if pos_element is not None and pos_element.text != "255":
+                if pos_element is not None and pos_element.text is not None and pos_element.text != "255":
                     warema_raw = int(pos_element.text)
                     warema_percent = warema_raw / 2
                     ha_position = int(100 - warema_percent)

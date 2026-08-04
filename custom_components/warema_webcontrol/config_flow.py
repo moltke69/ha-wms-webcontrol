@@ -4,7 +4,7 @@ from homeassistant import config_entries
 from .const import CONF_HOST, DOMAIN
 
 
-class WaremaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+class WaremaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignore[call-arg]
     """Verwaltet den Setup-Prozess in der UI."""
 
     VERSION = 1
