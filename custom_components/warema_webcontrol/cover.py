@@ -39,7 +39,7 @@ async def send_protocol_command(host: str, payload_hex: str) -> str | None:
 
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.get(url, timeout=5) as response:
+            async with session.get(url, timeout=aiohttp.ClientTimeout(total=5)) as response:
                 if response.status == 200:
                     return await response.text()
         except (aiohttp.ClientError, asyncio.TimeoutError) as e:
