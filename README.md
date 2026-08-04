@@ -1,8 +1,8 @@
 # WMS WebControl (Basic) – Home Assistant Integration
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
-[![License: LPGL3.0](https://img.shields.io/github/license/moltke69/ha-wms-webcontrol)](LICENSE)
 [![Maintenance](https://img.shields.io/badge/Maintenance-Active-green.svg)](https://github.com/moltke69/ha-wms-webcontrol)
+[![HACS Validation](https://github.com/moltke69/ha-wms-webcontrol/actions/workflows/validate.yml/badge.svg)](https://github.com/moltke69/ha-wms-webcontrol/actions)
 
 ---
 

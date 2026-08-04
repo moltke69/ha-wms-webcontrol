@@ -6,6 +6,6 @@
   "dependencies": [],
   "codeowners": ["@moltke69"],
   "requirements": [],
-  "version": "1.0.7",
+  "version": "1.0.8",
   "iot_class": "local_polling"
 }
