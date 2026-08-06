@@ -43,6 +43,7 @@ async def async_setup_entry(
 
                 root_channel = ET.fromstring(xml_channel)
                 kanalname_elem = root_channel.find("kanalname")
+                produkttyp_elem = root_channel.find("produkttyp")
                 bedientyp_elem = root_channel.find("bedientyp")
 
                 if kanalname_elem is None or not kanalname_elem.text:
@@ -53,8 +54,13 @@ async def async_setup_entry(
                     if bedientyp_elem is not None and bedientyp_elem.text is not None
                     else None
                 )
+                produkttyp = (
+                    int(produkttyp_elem.text)
+                    if produkttyp_elem is not None and produkttyp_elem.text is not None
+                    else None
+                )
 
-                if bedientyp == 4:
+                if produkttyp in (3, 4, 5, 6) and bedientyp == 4:
                     kanalname = kanalname_elem.text
                     entities.append(
                         WaremaWaveButton(host, room_hex, channel_hex, kanalname)

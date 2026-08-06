@@ -84,6 +84,7 @@ async def async_setup_entry(
                 root_channel = ET.fromstring(xml_channel)
                 kanalname_elem = root_channel.find("kanalname")
                 bedientyp_elem = root_channel.find("bedientyp")
+                produkttyp_elem = root_channel.find("produkttyp")
 
                 if kanalname_elem is None or not kanalname_elem.text:
                     break
@@ -94,27 +95,28 @@ async def async_setup_entry(
                     if bedientyp_elem is not None and bedientyp_elem.text is not None
                     else None
                 )
+                produkttyp = (
+                    int(produkttyp_elem.text)
+                    if produkttyp_elem is not None and produkttyp_elem.text is not None
+                    else None
+                )
 
-                if bedientyp == 4:
+                if produkttyp in (3, 4, 5, 6) and bedientyp == 4:
                     entities.append(
                         WaremaAwning(
-                            host, room_hex, channel_hex, kanalname, bedientyp, "main"
+                            host, room_hex, channel_hex, kanalname, produkttyp, "main"
                         )
                     )
+
+                if produkttyp in (4, 6) and bedientyp == 4:
                     entities.append(
                         WaremaAwning(
                             host,
                             room_hex,
                             channel_hex,
                             f"{kanalname} Volant",
-                            bedientyp,
+                            produkttyp,
                             "volant",
-                        )
-                    )
-                else:
-                    entities.append(
-                        WaremaAwning(
-                            host, room_hex, channel_hex, kanalname, bedientyp, "main"
                         )
                     )
 
@@ -128,7 +130,7 @@ class WaremaAwning(CoverEntity):
     _attr_has_entity_name = True
     _attr_translation_key = "volant"
 
-    def __init__(self, host, room_id, channel_id, name, bedientyp, cover_type="main"):
+    def __init__(self, host, room_id, channel_id, name, produkttyp, cover_type="main"):
         self._host = host
         self._room_id = room_id
         self._channel_id = channel_id
@@ -138,12 +140,13 @@ class WaremaAwning(CoverEntity):
 
         self._attr_unique_id = f"warema_{host}_{room_id}_{channel_id}_{cover_type}"
 
-        if bedientyp == 4:
-            self._attr_device_class = CoverDeviceClass.SHADE
-        elif bedientyp in [2, 3]:
-            self._attr_device_class = CoverDeviceClass.SHUTTER
+        if cover_type == "volant":
+            self._attr_has_entity_name = True
+            self._attr_translation_key = "volant"
         else:
-            self._attr_device_class = CoverDeviceClass.SHADE
+            self._name = name
+
+        self._attr_device_class = CoverDeviceClass.SHADE
 
         self._attr_supported_features = (
             CoverEntityFeature.OPEN
