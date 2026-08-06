@@ -125,6 +125,9 @@ async def async_setup_entry(
 
 
 class WaremaAwning(CoverEntity):
+    _attr_has_entity_name = True
+    _attr_translation_key = "volant"
+
     def __init__(self, host, room_id, channel_id, name, bedientyp, cover_type="main"):
         self._host = host
         self._room_id = room_id

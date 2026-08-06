@@ -9,5 +9,17 @@
         }
       }
     }
+  },
+  "entity": {
+    "cover": {
+      "volant": {
+        "name": "Volant"
+      }
+    },
+    "button": {
+      "wave": {
+        "name": "Winken"
+      }
+    }
   }
 }
