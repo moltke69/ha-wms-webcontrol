@@ -13,7 +13,7 @@
 
 ---
 
-This custom component enables local control of Warema awnings (and other WMS devices) via the classic **Warema WMS WebControl** (without "Pro") in Home Assistant. Since the WMS WebControl does not offer an official API, this integration uses the internal XML protocols, which are also used by the device's web interface, to send commands and query the status.
+This custom component enables local control of Warema awnings (with and without valance) via the classic **Warema WMS WebControl** (without "Pro") in Home Assistant. Since the WMS WebControl does not offer an official API, this integration uses the internal XML protocols, which are also used by the device's web interface, to send commands and query the status.
 
 ## Features
 
@@ -53,6 +53,10 @@ After the integration is installed and Home Assistant has been restarted, setup 
 5. Click *Submit*.
 
 Sit back! The integration will now scan all rooms and automatically add your awnings as "covers" to your Home Assistant.
+
+For each awning you have one entity for controlling the position and one entity to wave (the awning is going up and down shortly). If you have a valance, you'll get an additional entity to control it.
+
+[![entity example](docs/example_entities.png)]
 
 ## Troubleshooting
 
