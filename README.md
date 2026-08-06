@@ -56,7 +56,7 @@ Sit back! The integration will now scan all rooms and automatically add your awn
 
 For each awning you have one entity for controlling the position and one entity to wave (the awning is going up and down shortly). If you have a valance, you'll get an additional entity to control it.
 
-[example entities](docs/example_entities.png)
+![example entities](docs/example_entities.png)
 
 ## Troubleshooting
 
