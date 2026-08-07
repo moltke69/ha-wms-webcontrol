@@ -12,9 +12,10 @@ from homeassistant.components.cover import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import CONF_HOST
+from .const import CONF_HOST, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -153,6 +154,12 @@ class WaremaAwning(CoverEntity):
             | CoverEntityFeature.CLOSE
             | CoverEntityFeature.SET_POSITION
             | CoverEntityFeature.STOP
+        )
+
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"warema_{host}_{room_id}_{channel_id}")},
+            name=name,
+            manufacturer="Warema",
         )
 
     @property

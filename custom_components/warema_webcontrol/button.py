@@ -4,9 +4,10 @@ import xml.etree.ElementTree as ET
 from homeassistant.components.button import ButtonEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import CONF_HOST
+from .const import CONF_HOST, DOMAIN
 from .cover import send_protocol_command
 
 _LOGGER = logging.getLogger(__name__)
@@ -83,6 +84,10 @@ class WaremaWaveButton(ButtonEntity):
 
         self._attr_name = f"{name} Winken"
         self._attr_unique_id = f"warema_{host}_{room_id}_{channel_id}_wave"
+
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"warema_{host}_{room_id}_{channel_id}")}
+        )
 
     async def async_press(self) -> None:
         payload = f"25{self._room_id}{self._channel_id}"
