@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.1 - 2026.08.08
+
+### Changed
+
+* add all cover types (not only awings)
+
+### Fixed
+
+* ruff formatting corrected
+
 ## 1.1.0 - 2026.08.07
 
 ### Added

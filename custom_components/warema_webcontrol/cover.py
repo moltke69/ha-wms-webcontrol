@@ -22,28 +22,29 @@ _LOGGER = logging.getLogger(__name__)
 _GLOBAL_SEQ = 0
 
 COVER_MAPPING = {
-    0: CoverDeviceClass.BLIND,      # Raffstore
-    1: CoverDeviceClass.BLIND,      # Jalousie innen
-    2: CoverDeviceClass.SHUTTER,    # Rollladen
-    3: CoverDeviceClass.AWNING,     # Markise
-    4: CoverDeviceClass.AWNING,     # Markise 1 Volant
-    5: CoverDeviceClass.AWNING,     # Markise int. Wind
-    6: CoverDeviceClass.AWNING,     # Markise 1 Volant int. Wind
-    7: CoverDeviceClass.AWNING,     # Wintergarten Markise
-    8: CoverDeviceClass.AWNING,     # Fassaden Markise
-    9: CoverDeviceClass.AWNING,     # Fallarm Markise
-    10: CoverDeviceClass.AWNING,    # Senkrecht Markise
-    11: CoverDeviceClass.AWNING,    # Markisolette
-    12: CoverDeviceClass.SHADE,     # Faltstore innen
-    13: CoverDeviceClass.SHADE,     # Rollo innen
-    14: CoverDeviceClass.BLIND,     # Vertikal-Jalousie innen
-    15: CoverDeviceClass.WINDOW,    # Fenster
-    21: CoverDeviceClass.AWNING,    # Volant
-    22: CoverDeviceClass.AWNING,    # Markise 2 Volant
-    23: CoverDeviceClass.AWNING,    # Markise 2 Volant int. Wind
-    24: CoverDeviceClass.AWNING,    # Sonnensegel
-    25: CoverDeviceClass.AWNING,    # Pergolamarkise
+    0: CoverDeviceClass.BLIND,  # Raffstore
+    1: CoverDeviceClass.BLIND,  # Jalousie innen
+    2: CoverDeviceClass.SHUTTER,  # Rollladen
+    3: CoverDeviceClass.AWNING,  # Markise
+    4: CoverDeviceClass.AWNING,  # Markise 1 Volant
+    5: CoverDeviceClass.AWNING,  # Markise int. Wind
+    6: CoverDeviceClass.AWNING,  # Markise 1 Volant int. Wind
+    7: CoverDeviceClass.AWNING,  # Wintergarten Markise
+    8: CoverDeviceClass.AWNING,  # Fassaden Markise
+    9: CoverDeviceClass.AWNING,  # Fallarm Markise
+    10: CoverDeviceClass.AWNING,  # Senkrecht Markise
+    11: CoverDeviceClass.AWNING,  # Markisolette
+    12: CoverDeviceClass.SHADE,  # Faltstore innen
+    13: CoverDeviceClass.SHADE,  # Rollo innen
+    14: CoverDeviceClass.BLIND,  # Vertikal-Jalousie innen
+    15: CoverDeviceClass.WINDOW,  # Fenster
+    21: CoverDeviceClass.AWNING,  # Volant
+    22: CoverDeviceClass.AWNING,  # Markise 2 Volant
+    23: CoverDeviceClass.AWNING,  # Markise 2 Volant int. Wind
+    24: CoverDeviceClass.AWNING,  # Sonnensegel
+    25: CoverDeviceClass.AWNING,  # Pergolamarkise
 }
+
 
 def get_next_sequence() -> str:
     global _GLOBAL_SEQ
@@ -140,10 +141,24 @@ async def async_setup_entry(
 
                 if produkttyp in (22, 23):
                     entities.append(
-                        WaremaAwning(host, room_hex, channel_hex, kanalname, produkttyp, "volant_1")
+                        WaremaAwning(
+                            host,
+                            room_hex,
+                            channel_hex,
+                            kanalname,
+                            produkttyp,
+                            "volant_1",
+                        )
                     )
                     entities.append(
-                        WaremaAwning(host, room_hex, channel_hex, kanalname, produkttyp, "volant_2")
+                        WaremaAwning(
+                            host,
+                            room_hex,
+                            channel_hex,
+                            kanalname,
+                            produkttyp,
+                            "volant_2",
+                        )
                     )
 
         except ET.ParseError:
