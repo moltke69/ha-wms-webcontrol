@@ -13,8 +13,14 @@
   "entity": {
     "cover": {
       "volant": {
-        "name": "Volant"
-      }
+          "name": "Volant"
+        },
+        "volant_1": {
+          "name": "Volant links"
+        },
+        "volant_2": {
+          "name": "Volant rechts"
+        }
     },
     "button": {
       "wave": {

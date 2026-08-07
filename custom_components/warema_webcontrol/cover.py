@@ -21,6 +21,29 @@ _LOGGER = logging.getLogger(__name__)
 
 _GLOBAL_SEQ = 0
 
+COVER_MAPPING = {
+    0: CoverDeviceClass.BLIND,      # Raffstore
+    1: CoverDeviceClass.BLIND,      # Jalousie innen
+    2: CoverDeviceClass.SHUTTER,    # Rollladen
+    3: CoverDeviceClass.AWNING,     # Markise
+    4: CoverDeviceClass.AWNING,     # Markise 1 Volant
+    5: CoverDeviceClass.AWNING,     # Markise int. Wind
+    6: CoverDeviceClass.AWNING,     # Markise 1 Volant int. Wind
+    7: CoverDeviceClass.AWNING,     # Wintergarten Markise
+    8: CoverDeviceClass.AWNING,     # Fassaden Markise
+    9: CoverDeviceClass.AWNING,     # Fallarm Markise
+    10: CoverDeviceClass.AWNING,    # Senkrecht Markise
+    11: CoverDeviceClass.AWNING,    # Markisolette
+    12: CoverDeviceClass.SHADE,     # Faltstore innen
+    13: CoverDeviceClass.SHADE,     # Rollo innen
+    14: CoverDeviceClass.BLIND,     # Vertikal-Jalousie innen
+    15: CoverDeviceClass.WINDOW,    # Fenster
+    21: CoverDeviceClass.AWNING,    # Volant
+    22: CoverDeviceClass.AWNING,    # Markise 2 Volant
+    23: CoverDeviceClass.AWNING,    # Markise 2 Volant int. Wind
+    24: CoverDeviceClass.AWNING,    # Sonnensegel
+    25: CoverDeviceClass.AWNING,    # Pergolamarkise
+}
 
 def get_next_sequence() -> str:
     global _GLOBAL_SEQ
@@ -84,41 +107,43 @@ async def async_setup_entry(
 
                 root_channel = ET.fromstring(xml_channel)
                 kanalname_elem = root_channel.find("kanalname")
-                bedientyp_elem = root_channel.find("bedientyp")
                 produkttyp_elem = root_channel.find("produkttyp")
 
                 if kanalname_elem is None or not kanalname_elem.text:
                     break
 
                 kanalname = kanalname_elem.text
-                bedientyp = (
-                    int(bedientyp_elem.text)
-                    if bedientyp_elem is not None and bedientyp_elem.text is not None
-                    else None
-                )
                 produkttyp = (
                     int(produkttyp_elem.text)
                     if produkttyp_elem is not None and produkttyp_elem.text is not None
                     else None
                 )
 
-                if produkttyp in (3, 4, 5, 6) and bedientyp == 4:
+                if produkttyp in COVER_MAPPING:
                     entities.append(
                         WaremaAwning(
                             host, room_hex, channel_hex, kanalname, produkttyp, "main"
                         )
                     )
 
-                if produkttyp in (4, 6) and bedientyp == 4:
+                if produkttyp in (4, 6):
                     entities.append(
                         WaremaAwning(
                             host,
                             room_hex,
                             channel_hex,
-                            f"{kanalname} Volant",
+                            kanalname,
                             produkttyp,
                             "volant",
                         )
+                    )
+
+                if produkttyp in (22, 23):
+                    entities.append(
+                        WaremaAwning(host, room_hex, channel_hex, kanalname, produkttyp, "volant_1")
+                    )
+                    entities.append(
+                        WaremaAwning(host, room_hex, channel_hex, kanalname, produkttyp, "volant_2")
                     )
 
         except ET.ParseError:
@@ -140,14 +165,15 @@ class WaremaAwning(CoverEntity):
         self._current_position = 100
 
         self._attr_unique_id = f"warema_{host}_{room_id}_{channel_id}_{cover_type}"
+        self._attr_device_class = COVER_MAPPING.get(produkttyp, CoverDeviceClass.SHADE)
 
-        if cover_type == "volant":
+        if cover_type.startswith("volant"):
             self._attr_has_entity_name = True
             self._attr_translation_key = "volant"
+            self._attr_name = None
         else:
+            self._attr_has_entity_name = False
             self._name = name
-
-        self._attr_device_class = CoverDeviceClass.SHADE
 
         self._attr_supported_features = (
             CoverEntityFeature.OPEN
@@ -188,8 +214,10 @@ class WaremaAwning(CoverEntity):
 
         if self._cover_type == "main":
             payload = f"21{self._room_id}{self._channel_id}03{position_hex}ffffff"
-        elif self._cover_type == "volant":
+        elif self._cover_type in ("volant", "volant_1"):
             payload = f"21{self._room_id}{self._channel_id}03ffff{position_hex}ff"
+        elif self._cover_type == "volant_2":
+            payload = f"21{self._room_id}{self._channel_id}03ffffff{position_hex}"
 
         await self._send(payload)
         self._current_position = ha_position
@@ -212,7 +240,7 @@ class WaremaAwning(CoverEntity):
         payload_wakeup = f"23{self._room_id}{self._channel_id}"
         await self._send(payload_wakeup)
 
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(1.0)
 
         payload_status = f"31{self._room_id}{self._channel_id}01"
         xml_response = await self._send(payload_status)
@@ -221,9 +249,13 @@ class WaremaAwning(CoverEntity):
             try:
                 root = ET.fromstring(xml_response)
 
-                tag_name = (
-                    "position" if self._cover_type == "main" else "positionvolant1"
-                )
+                if self._cover_type == "main":
+                    tag_name = "position"
+                elif self._cover_type == "volant_2":
+                    tag_name = "positionvolant2"
+                else:
+                    tag_name = "positionvolant1"
+
                 pos_element = root.find(tag_name)
 
                 if (

@@ -8,7 +8,7 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import CONF_HOST, DOMAIN
-from .cover import send_protocol_command
+from .cover import COVER_MAPPING, send_protocol_command
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -45,23 +45,17 @@ async def async_setup_entry(
                 root_channel = ET.fromstring(xml_channel)
                 kanalname_elem = root_channel.find("kanalname")
                 produkttyp_elem = root_channel.find("produkttyp")
-                bedientyp_elem = root_channel.find("bedientyp")
 
                 if kanalname_elem is None or not kanalname_elem.text:
                     break
 
-                bedientyp = (
-                    int(bedientyp_elem.text)
-                    if bedientyp_elem is not None and bedientyp_elem.text is not None
-                    else None
-                )
                 produkttyp = (
                     int(produkttyp_elem.text)
                     if produkttyp_elem is not None and produkttyp_elem.text is not None
                     else None
                 )
 
-                if produkttyp in (3, 4, 5, 6) and bedientyp == 4:
+                if produkttyp in COVER_MAPPING:
                     kanalname = kanalname_elem.text
                     entities.append(
                         WaremaWaveButton(host, room_hex, channel_hex, kanalname)
@@ -82,7 +76,7 @@ class WaremaWaveButton(ButtonEntity):
         self._room_id = room_id
         self._channel_id = channel_id
 
-        self._attr_name = f"{name} Winken"
+        self._attr_name = None
         self._attr_unique_id = f"warema_{host}_{room_id}_{channel_id}_wave"
 
         self._attr_device_info = DeviceInfo(
