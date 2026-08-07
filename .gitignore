@@ -1,0 +1,7 @@
+ext_docs/
+__pycache__/
+.env
+*.log
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
