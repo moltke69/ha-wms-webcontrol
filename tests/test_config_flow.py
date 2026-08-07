@@ -1,7 +1,8 @@
 from unittest.mock import patch
 
 from homeassistant import config_entries, data_entry_flow
-from custom_components.warema_webcontrol.const import DOMAIN, CONF_HOST
+
+from custom_components.warema_webcontrol.const import CONF_HOST, DOMAIN
 
 
 async def test_successful_config_flow(hass):
