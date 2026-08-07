@@ -25,24 +25,23 @@ COVER_MAPPING = {
     0: CoverDeviceClass.BLIND,  # Raffstore
     1: CoverDeviceClass.BLIND,  # Jalousie innen
     2: CoverDeviceClass.SHUTTER,  # Rollladen
-    3: CoverDeviceClass.AWNING,  # Markise
-    4: CoverDeviceClass.AWNING,  # Markise 1 Volant
-    5: CoverDeviceClass.AWNING,  # Markise int. Wind
-    6: CoverDeviceClass.AWNING,  # Markise 1 Volant int. Wind
-    7: CoverDeviceClass.AWNING,  # Wintergarten Markise
-    8: CoverDeviceClass.AWNING,  # Fassaden Markise
-    9: CoverDeviceClass.AWNING,  # Fallarm Markise
-    10: CoverDeviceClass.AWNING,  # Senkrecht Markise
-    11: CoverDeviceClass.AWNING,  # Markisolette
+    3: CoverDeviceClass.SHADE,  # Markise
+    4: CoverDeviceClass.SHADE,  # Markise 1 Volant
+    5: CoverDeviceClass.SHADE,  # Markise int. Wind
+    6: CoverDeviceClass.SHADE,  # Markise 1 Volant int. Wind
+    7: CoverDeviceClass.SHADE,  # Wintergarten Markise
+    8: CoverDeviceClass.SHADE,  # Fassaden Markise
+    9: CoverDeviceClass.SHADE,  # Fallarm Markise
+    10: CoverDeviceClass.SHADE,  # Senkrecht Markise
+    11: CoverDeviceClass.SHADE,  # Markisolette
     12: CoverDeviceClass.SHADE,  # Faltstore innen
     13: CoverDeviceClass.SHADE,  # Rollo innen
     14: CoverDeviceClass.BLIND,  # Vertikal-Jalousie innen
-    15: CoverDeviceClass.WINDOW,  # Fenster
-    21: CoverDeviceClass.AWNING,  # Volant
-    22: CoverDeviceClass.AWNING,  # Markise 2 Volant
-    23: CoverDeviceClass.AWNING,  # Markise 2 Volant int. Wind
-    24: CoverDeviceClass.AWNING,  # Sonnensegel
-    25: CoverDeviceClass.AWNING,  # Pergolamarkise
+    21: CoverDeviceClass.SHADE,  # Volant
+    22: CoverDeviceClass.SHADE,  # Markise 2 Volant
+    23: CoverDeviceClass.SHADE,  # Markise 2 Volant int. Wind
+    24: CoverDeviceClass.SHADE,  # Sonnensegel
+    25: CoverDeviceClass.SHADE,  # Pergolamarkise
 }
 
 

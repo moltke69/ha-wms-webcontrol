@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.2 - 2026.08.08
+
+### Fixed
+
+* as awning type in HA shows silly icons, use shader (up/down icons)
+
 ## 1.1.1 - 2026.08.08
 
 ### Changed
