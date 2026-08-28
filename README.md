@@ -152,7 +152,7 @@ The code was then thoroughly tested locally.
 
 ## Showing Your Appreciation
 
-If you like this project, please give it a star on [GitHub](https://github.com/moltke69/ha_wms_webconfig) or consider becoming a [Sponsor](https://github.com/sponsors/moltke69).
+If you like this project, please give it a star on [GitHub](https://github.com/moltke69/ha-wms-webconfig) or consider becoming a [Sponsor](https://github.com/sponsors/moltke69).
 
 ---
 *Disclaimer: This is an unofficial community project. It is not affiliated with WAREMA Renkhoff SE.*
