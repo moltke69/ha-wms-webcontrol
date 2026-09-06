@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.4 - 2026.09.06
+
+### Fixed
+
+* Reverse 0%=100% 100%=0% between HA and Warema
+
 ## 1.1.3 - 2026.09.06
 
 ### Fixed
