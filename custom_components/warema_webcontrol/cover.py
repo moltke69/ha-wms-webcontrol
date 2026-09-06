@@ -238,10 +238,10 @@ class WaremaAwning(CoverEntity):
         self.async_write_ha_state()
 
     async def async_open_cover(self, **kwargs):
-        await self.async_set_cover_position(position=100)
+        await self.async_set_cover_position(position=0)
 
     async def async_close_cover(self, **kwargs):
-        await self.async_set_cover_position(position=0)
+        await self.async_set_cover_position(position=100)
 
     async def async_stop_cover(self, **kwargs):
         payload = f"21{self._room_id}{self._channel_id}01ffffffff"

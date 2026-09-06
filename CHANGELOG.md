@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.5 - 2026.09.06
+
+### Fixed
+
+* Change end position handling between HA and Warema
+
 ## 1.1.4 - 2026.09.06
 
 ### Fixed
