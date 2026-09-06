@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.3 - 2026.09.06
+
+### Fixed
+
+* Reverse to Awning type in HA (will silly icons)
+* Reverse 0%=100% 100%=0% between HA and Warema
+
 ## 1.1.2 - 2026.08.08
 
 ### Fixed

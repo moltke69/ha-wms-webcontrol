@@ -25,23 +25,23 @@ COVER_MAPPING = {
     0: CoverDeviceClass.BLIND,  # Raffstore
     1: CoverDeviceClass.BLIND,  # Jalousie innen
     2: CoverDeviceClass.SHUTTER,  # Rollladen
-    3: CoverDeviceClass.SHADE,  # Markise
-    4: CoverDeviceClass.SHADE,  # Markise 1 Volant
-    5: CoverDeviceClass.SHADE,  # Markise int. Wind
-    6: CoverDeviceClass.SHADE,  # Markise 1 Volant int. Wind
-    7: CoverDeviceClass.SHADE,  # Wintergarten Markise
-    8: CoverDeviceClass.SHADE,  # Fassaden Markise
-    9: CoverDeviceClass.SHADE,  # Fallarm Markise
-    10: CoverDeviceClass.SHADE,  # Senkrecht Markise
-    11: CoverDeviceClass.SHADE,  # Markisolette
+    3: CoverDeviceClass.AWNING,  # Markise
+    4: CoverDeviceClass.AWNING,  # Markise 1 Volant
+    5: CoverDeviceClass.AWNING,  # Markise int. Wind
+    6: CoverDeviceClass.AWNING,  # Markise 1 Volant int. Wind
+    7: CoverDeviceClass.AWNING,  # Wintergarten Markise
+    8: CoverDeviceClass.AWNING,  # Fassaden Markise
+    9: CoverDeviceClass.AWNING,  # Fallarm Markise
+    10: CoverDeviceClass.AWNING,  # Senkrecht Markise
+    11: CoverDeviceClass.AWNING,  # Markisolette
     12: CoverDeviceClass.SHADE,  # Faltstore innen
     13: CoverDeviceClass.SHADE,  # Rollo innen
     14: CoverDeviceClass.BLIND,  # Vertikal-Jalousie innen
     21: CoverDeviceClass.SHADE,  # Volant
-    22: CoverDeviceClass.SHADE,  # Markise 2 Volant
-    23: CoverDeviceClass.SHADE,  # Markise 2 Volant int. Wind
+    22: CoverDeviceClass.AWNING,  # Markise 2 Volant
+    23: CoverDeviceClass.AWNING,  # Markise 2 Volant int. Wind
     24: CoverDeviceClass.SHADE,  # Sonnensegel
-    25: CoverDeviceClass.SHADE,  # Pergolamarkise
+    25: CoverDeviceClass.AWNING,  # Pergolamarkise
 }
 
 
@@ -222,7 +222,7 @@ class WaremaAwning(CoverEntity):
         if ha_position is None:
             return
 
-        warema_percent = 100 - ha_position
+        warema_percent = ha_position
         warema_raw = int(warema_percent * 2)
         position_hex = f"{warema_raw:02x}"
 
@@ -238,10 +238,10 @@ class WaremaAwning(CoverEntity):
         self.async_write_ha_state()
 
     async def async_open_cover(self, **kwargs):
-        await self.async_set_cover_position(position=100)
+        await self.async_set_cover_position(position=0)
 
     async def async_close_cover(self, **kwargs):
-        await self.async_set_cover_position(position=0)
+        await self.async_set_cover_position(position=100)
 
     async def async_stop_cover(self, **kwargs):
         payload = f"21{self._room_id}{self._channel_id}01ffffffff"
@@ -279,7 +279,7 @@ class WaremaAwning(CoverEntity):
                 ):
                     warema_raw = int(pos_element.text)
                     warema_percent = warema_raw / 2
-                    ha_position = int(100 - warema_percent)
+                    ha_position = int(warema_percent)
                     self._current_position = ha_position
             except ET.ParseError:
                 pass
