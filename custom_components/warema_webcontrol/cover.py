@@ -222,7 +222,7 @@ class WaremaAwning(CoverEntity):
         if ha_position is None:
             return
 
-        warema_percent = 100 - ha_position
+        warema_percent = ha_position
         warema_raw = int(warema_percent * 2)
         position_hex = f"{warema_raw:02x}"
 
@@ -279,7 +279,7 @@ class WaremaAwning(CoverEntity):
                 ):
                     warema_raw = int(pos_element.text)
                     warema_percent = warema_raw / 2
-                    ha_position = int(100 - warema_percent)
+                    ha_position = int(warema_percent)
                     self._current_position = ha_position
             except ET.ParseError:
                 pass

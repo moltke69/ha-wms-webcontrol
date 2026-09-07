@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.6 - 2026.09.07
+
+### Fixed
+
+* Correct end position handling
+
 ## 1.1.5 - 2026.09.06
 
 ### Fixed
