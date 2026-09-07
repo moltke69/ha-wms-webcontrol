@@ -1,35 +1,15 @@
 # Changelog
 
-## 1.1.7b1 - 2026.09.07
+## 1.1.7 - 2026.09.07
 
 ### Fixed
-
-* Manually up / down correction 
-
-## 1.1.6 - 2026.09.07
-
-### Fixed
-
+* Correct position handling
 * Correct end position handling
+* Correct manual handling
+* Awnings are now awnings in HA
 
-## 1.1.5 - 2026.09.06
-
-### Fixed
-
-* Change end position handling between HA and Warema
-
-## 1.1.4 - 2026.09.06
-
-### Fixed
-
-* Reverse 0%=100% 100%=0% between HA and Warema
-
-## 1.1.3 - 2026.09.06
-
-### Fixed
-
-* Reverse to Awning type in HA (will silly icons)
-* Reverse 0%=100% 100%=0% between HA and Warema
+### Remark
+* Version 1.1.3, 1.1.4, 1.1.5 and 1.1.6 deleted as totally buggy in production
 
 ## 1.1.2 - 2026.08.08
 

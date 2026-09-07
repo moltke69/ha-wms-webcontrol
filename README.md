@@ -62,7 +62,8 @@ For each awning you have one entity for controlling the position and one entity 
 ## Troubleshooting
 
 * **The awning only responds intermittently:** The system uses sequential numbers to authenticate commands. The integration handles this automatically. If commands are still being dropped, check if the web control has a stable Wi-Fi/LAN connection.
-* **The position is incorrect:** Warema uses an internal logic of 0-200, while Home Assistant uses 0-100% (0% = closed/extended, 100% = open/retracted). The integration automatically converts this.
+* **The position is incorrect:** Warema uses an internal logic of 0-200, while Home Assistant uses 0-100% (0% = closed/retracted, 100% = open/extended). The integration automatically converts this.
+* **Different awning position with same numerical position**: Awning with different hardware version uses different translation of position number into awning postion. E.g. 50 does not always mean 50% out.
 
 ## WMS WebControl protocol (reverse engineering)
 
