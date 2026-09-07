@@ -222,8 +222,7 @@ class WaremaAwning(CoverEntity):
         if ha_position is None:
             return
 
-        warema_percent = ha_position
-        warema_raw = int(warema_percent * 2)
+        warema_raw = int(ha_position * 2)
         position_hex = f"{warema_raw:02x}"
 
         if self._cover_type == "main":
@@ -238,10 +237,10 @@ class WaremaAwning(CoverEntity):
         self.async_write_ha_state()
 
     async def async_open_cover(self, **kwargs):
-        await self.async_set_cover_position(position=0)
+        await self.async_set_cover_position(position=100)
 
     async def async_close_cover(self, **kwargs):
-        await self.async_set_cover_position(position=100)
+        await self.async_set_cover_position(position=0)
 
     async def async_stop_cover(self, **kwargs):
         payload = f"21{self._room_id}{self._channel_id}01ffffffff"
@@ -278,8 +277,6 @@ class WaremaAwning(CoverEntity):
                     and pos_element.text != "255"
                 ):
                     warema_raw = int(pos_element.text)
-                    warema_percent = warema_raw / 2
-                    ha_position = int(warema_percent)
-                    self._current_position = ha_position
+                    self._current_position = int(warema_raw / 2)
             except ET.ParseError:
                 pass

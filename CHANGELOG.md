@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.7b1 - 2026.09.07
+
+### Fixed
+
+* Manually up / down correction 
+
 ## 1.1.6 - 2026.09.07
 
 ### Fixed
