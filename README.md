@@ -59,6 +59,7 @@ For each awning you have one entity for controlling the position and one entity 
 
 ![example entities](docs/example_entities.png)
 
+
 ## Troubleshooting
 
 * **The awning only responds intermittently:** The system uses sequential numbers to authenticate commands. The integration handles this automatically. If commands are still being dropped, check if the web control has a stable Wi-Fi/LAN connection.
